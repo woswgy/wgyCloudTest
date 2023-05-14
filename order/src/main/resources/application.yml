@@ -1,0 +1,32 @@
+server:
+  # 应用服务 WEB 访问端口
+  port: 8082
+
+spring:
+  # 应用名称
+  application:
+    name: orderServer
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+      discovery:
+        # Nacos 服务发现与注册配置，其中子属性 server-addr 指定 Nacos 服务器主机和端口
+        server-addr: 127.0.0.1:8848
+        # Nacos帮助文档: https://nacos.io/zh-cn/docs/concepts.html
+        # Nacos认证信息
+        username: nacos
+        password: nacos
+        # 注册到 nacos 的指定 namespace，默认为 public
+        namespace: public
+
+#方式2：负载均衡配置文件
+#指定使用Nacos提供的负载均衡策略（优先调用同一集群实例，基于随机和权重）
+stockServer:
+  ribbon:
+#    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule
+    #指定自定义负载均衡策略规则CustomRule类，使用自己定义的规则
+    NFLoadBalancerRuleClassName: com.wgy.order.rule.CustomRule
+logging:
+  level:
+    com.wgy.order.feign: debug
